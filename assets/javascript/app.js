@@ -12,16 +12,14 @@ var database = firebase.database();
 
   var name = "";
   var destination = "";
-  var start = "";
   var frequency = "";
 
- $("#add-user").on("click", function(event) {
+ $("#add-train").on("click", function(event) {
   
  event.preventDefault();
 
   var name = $("#name-input").val().trim();
   var destination = $("#destination-input").val().trim();
-  var start = $("#start-input").val().trim();
   var frequency = $("#frequency-input").val().trim();
 
 
@@ -29,7 +27,6 @@ var database = firebase.database();
   database.ref().push({
   	name: name,
   	destination: destination,
-  	start: start,
   	frequency: frequency,
     })
 
@@ -40,16 +37,26 @@ var database = firebase.database();
 
   	console.log(snapshot.val().name);
   	console.log(snapshot.val().destination);
-  	console.log(snapshot.val().start);
   	console.log(snapshot.val().frequency);
 
   	$("#name-display").text(snapshot.val().name);
   	$("#destination-display").text(snapshot.val().destination);
-  	$("#start-display").text(snapshot.val().start);
   	$("#frequency-display").text(snapshot.val().frequency);
-  })
 
 
 
+    }, function(errorObject) {
+      console.log("The read failed: " + errorObject.code);
 
-});
+})
+
+
+ });
+
+ // Pseudocode
+ // clear fields after submit button is clicked
+ // when a train is added, append to the table
+ // use start time and frequency to determine next arrival and min away
+
+
+
