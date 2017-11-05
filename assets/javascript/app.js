@@ -10,9 +10,6 @@ var config = {
 
 var database = firebase.database();
 
-// var name = "";
-// var destination = "";
-// var frequency = "";
 
 $("#add-train").on("click", function(event) {
   
@@ -20,12 +17,17 @@ $("#add-train").on("click", function(event) {
 
   var name = $("#name-input").val().trim();
   var destination = $("#destination-input").val().trim();
+  var startTime = moment($("#start-input").val().trim(), "HH:mm").format("X");
+  
+  // var startTime = $("#start-input").val().trim();
   var frequency = $("#frequency-input").val().trim();
 
   var newTrain = {
     name: name,
     destination: destination,
+    startTime: startTime,
     frequency: frequency
+
   };
 
 
@@ -36,6 +38,7 @@ $("#add-train").on("click", function(event) {
 
   $("#name-input").val("");
   $("#destination-input").val("");
+  $("#start-input").val("");
   $("#frequency-input").val("")
 
 });
@@ -47,28 +50,32 @@ database.ref().on("child_added", function(childSnapshot, prevChildKey){
 
   	var name = childSnapshot.val().name;
   	var destination = childSnapshot.val().destination;
-  	var frequency = childSnapshot.val().frequency;
+  	var startTime = childSnapshot.val().startTime;
+    var frequency = childSnapshot.val().frequency;
 
     console.log(name);
     console.log(destination);
+    console.log(startTime);
     console.log(frequency);
 
+    var startTimeUpdate = moment(startTime).format("HH:mm");
+
+    var startTimeConverted = moment(startTimeUpdate, "hh:mm A"). subtract(1, "years");
+
+    var currentTime = moment()
+
+    var diffTime = moment().diff(moment(startTimeConverted), "minutes");
+
+    var tRemainder = diffTime % frequency;
+
+    var minAway = frequency - tRemainder;
+
+    var nextArrival = moment().add(minAway, "minutes");
 
 
-    $("#trainTable").append("<tr><td>" + name + "</td><td>" + destination + "</td><td>" + 
-      frequency + "</td></tr>");
-
-// // $("#trainTable").append("<tr><td>" + name + "</td><td>" + destination + "</td><td>" + 
-//       frequency + "</td><td>" + nextArrival + "</td><td>" + minAway + "</td></tr>");
+$("#trainTable").append("<tr><td>" + name + "</td><td>" + destination + "</td><td>" + 
+      frequency + "</td><td>" + nextArrival + "</td><td>" + minAway + "</td></tr>");
 
 });
-
-
-
- // Pseudocode
- // clear fields after submit button is clicked
-
- // use start time and frequency to determine next arrival and min away
-
 
 
