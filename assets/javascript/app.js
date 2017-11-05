@@ -10,52 +10,64 @@ var config = {
 
 var database = firebase.database();
 
-  var name = "";
-  var destination = "";
-  var frequency = "";
+// var name = "";
+// var destination = "";
+// var frequency = "";
 
- $("#add-train").on("click", function(event) {
+$("#add-train").on("click", function(event) {
   
- event.preventDefault();
+  event.preventDefault();
 
   var name = $("#name-input").val().trim();
   var destination = $("#destination-input").val().trim();
   var frequency = $("#frequency-input").val().trim();
 
+  var newTrain = {
+    name: name,
+    destination: destination,
+    frequency: frequency
+  };
 
 
-  database.ref().push({
-  	name: name,
-  	destination: destination,
-  	frequency: frequency,
-    })
-
-  // database.ref().on("value", function(snapshot){
-  	database.ref().on("child_added", function(snapshot){
-
-  	console.log(snapshot.val());
-
-  	console.log(snapshot.val().name);
-  	console.log(snapshot.val().destination);
-  	console.log(snapshot.val().frequency);
-
-  	$("#name-display").text(snapshot.val().name);
-  	$("#destination-display").text(snapshot.val().destination);
-  	$("#frequency-display").text(snapshot.val().frequency);
+  database.ref().push(newTrain);
 
 
+  // clear fields after submit button is clicked
 
-    }, function(errorObject) {
-      console.log("The read failed: " + errorObject.code);
+  $("#name-input").val("");
+  $("#destination-input").val("");
+  $("#frequency-input").val("")
 
-})
+});
+
+   // when a train is added, append to the table
+database.ref().on("child_added", function(childSnapshot, prevChildKey){
+
+  	console.log(childSnapshot.val());
+
+  	var name = childSnapshot.val().name;
+  	var destination = childSnapshot.val().destination;
+  	var frequency = childSnapshot.val().frequency;
+
+    console.log(name);
+    console.log(destination);
+    console.log(frequency);
 
 
- });
+
+    $("#trainTable").append("<tr><td>" + name + "</td><td>" + destination + "</td><td>" + 
+      frequency + "</td></tr>");
+
+// // $("#trainTable").append("<tr><td>" + name + "</td><td>" + destination + "</td><td>" + 
+//       frequency + "</td><td>" + nextArrival + "</td><td>" + minAway + "</td></tr>");
+
+});
+
+
 
  // Pseudocode
  // clear fields after submit button is clicked
- // when a train is added, append to the table
+
  // use start time and frequency to determine next arrival and min away
 
 
