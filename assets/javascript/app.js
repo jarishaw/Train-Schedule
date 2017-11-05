@@ -18,8 +18,6 @@ $("#add-train").on("click", function(event) {
   var name = $("#name-input").val().trim();
   var destination = $("#destination-input").val().trim();
   var startTime = moment($("#start-input").val().trim(), "HH:mm").format("X");
-  
-  // var startTime = $("#start-input").val().trim();
   var frequency = $("#frequency-input").val().trim();
 
   var newTrain = {
@@ -70,7 +68,7 @@ database.ref().on("child_added", function(childSnapshot, prevChildKey){
 
     var minAway = frequency - tRemainder;
 
-    var nextArrival = moment().add(minAway, "minutes");
+    var nextArrival = moment().add(minAway, "minutes").format("hh:mm A");
 
 
 $("#trainTable").append("<tr><td>" + name + "</td><td>" + destination + "</td><td>" + 
