@@ -6,6 +6,11 @@ User inputs train information.
 
 <img src="assets/images/train1.PNG" width="500">
 
+App calculates when the next train will arrive, which is relative to the current time.
+
+<img src="assets/images/train2.PNG" width="500">
+
+
 
 
 
